@@ -38,7 +38,6 @@ export function winningPosition (grid: GridState, color: PlayerColor, x: number,
         items.push({x, y})
       }
       }
-      console.log(items);
 
       if (items.length >= 4){
         return items

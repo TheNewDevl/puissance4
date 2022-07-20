@@ -1,6 +1,6 @@
 import { interpret, InterpreterFrom } from 'xstate';
 import { createModel } from "xstate/lib/model"
-import { GameContext, GridState, Player, GameStates, Position } from '../types';
+import { GameContext, GridState, Player, GameStates, Position, PlayerColor } from '../types';
 import { chooseColorAction, dropTokenAction, joinGameAction, leaveGameAction, restartAction, saveWinningPositionsAction, setCurrentPlayerAction, switchPlayerAction } from './actions';
 import { canChooseColorGuard, canDropGuard, canJoinGuard, canLeaveGuard, canStartGameGuard, isDrawMoveGuard, isWinningMoveGuard } from './guards';
 
@@ -43,8 +43,19 @@ export function makeGame (state: GameStates = GameStates.LOBBY, context: Partial
 
 export const GameMachine = GameModel.createMachine({
   id: 'game',
-  context: GameModel.initialContext,
-  initial: GameStates.LOBBY,
+  context: {...GameModel.initialContext, 
+    players: [{
+      id: 'Carlos', 
+      name: "Carlos", 
+      color: PlayerColor.YELLOW
+    }, {
+      id: 'Michael', 
+      name: "Michael", 
+      color: PlayerColor.RED
+    }], 
+    currentPlayer: 'Carlos'
+  },
+  initial: GameStates.PLAY,
   states:{
     [GameStates.LOBBY]: {
       on: {

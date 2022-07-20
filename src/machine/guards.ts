@@ -9,10 +9,10 @@ export const canLeaveGuard: GameGuard<'leave'> = (context, event) => {
   return context.players.find(p => p.id === event.playerId) !== undefined
 }
 
-export const canChooseColorGuard: GameGuard<'chooseColor'> = (context, event) => {
+export const canChooseColorGuard: GameGuard<'chooseColor'> = (context, event) => {  
   return [PlayerColor.RED, PlayerColor.YELLOW].includes(event.color as PlayerColor) && 
     context.players.find(p => p.id === event.playerId) !== undefined &&
-    context.players.find(p => p.color === event.color) !== undefined
+    context.players.find(p => p.color === event.color) === undefined
 }
 
 export const canStartGameGuard: GameGuard<'start'> = (context) => {
@@ -27,13 +27,6 @@ export const canDropGuard: GameGuard<'dropToken'> = (context, event) => {
 }
 
 export const isWinningMoveGuard: GameGuard<'dropToken'> = (context, event) => {
-  console.log(canDropGuard(context, event) && winningPosition(
-    context.grid, 
-    currentPlayer(context).color as PlayerColor, 
-    event.x, 
-    context.rowLength
-    )!.length > 0);
-  
   return canDropGuard(context, event) && winningPosition(
     context.grid, 
     currentPlayer(context).color as PlayerColor, 
