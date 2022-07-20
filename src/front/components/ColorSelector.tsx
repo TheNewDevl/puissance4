@@ -23,11 +23,12 @@ function ColorSelector({onSelect, players, colors}: ColorSelectorProps) {
       </div>
       <h3>Selectionnez une couleur</h3>
       <div className="selector">
-        {colors.map(color => <button 
-          className={discColorClass(color)} 
-          key={color}
-          onClick={() => onSelect(color)}
-          ></button> )}
+          {colors.map(color => <button 
+            key={color}
+            onClick={() => onSelect(color)}
+            >
+              <div className={discColorClass(color)}></div>
+            </button> )}
       </div>
       </>
   )

@@ -1,17 +1,20 @@
 import { CSSProperties } from "react"
 import { discColorClass } from "../../funcs/color"
 import { prevent } from "../../funcs/dom"
-import { CellState, GridState, PlayerColor } from "../../types"
+import { CellState, GridState, PlayerColor, Position } from "../../types"
 
 type GridProps = {
   grid: GridState, 
   color?: PlayerColor, 
   onDrop? : (x: number) => void
+  winningPositions: Position[]
 }
 
-function Grid({grid, color, onDrop}: GridProps) {
+function Grid({grid, color, onDrop, winningPositions}: GridProps) {
   const cols = grid[0].length
   const showColumns = color && onDrop
+  const isWinning = (x: number, y: number) => winningPositions.some(pos => pos.x === x && pos.y === y)
+
   return (
     <div 
       className="grid"
@@ -19,6 +22,7 @@ function Grid({grid, color, onDrop}: GridProps) {
       >
       {grid.map((row, y) => row.map((c, x) => (
         <Cell 
+          active={isWinning(x, y)}
           x={x}
           y={y}
           color={c}
@@ -39,13 +43,15 @@ export default Grid
 type CellProps = {
   x: number, 
   y: number, 
-  color: CellState
+  color: CellState, 
+  active: boolean
 }
-function Cell({y, color} : CellProps){
-console.log(y)
+
+function Cell({y, color, active} : CellProps){
+
   return (
     <div 
-      className={discColorClass(color)}
+      className={discColorClass(color) +( active ? ' disc-active' : '')}
       style={{"--row": String(y)} as CSSProperties}
       />
   )
